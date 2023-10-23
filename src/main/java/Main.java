@@ -4,6 +4,7 @@ import data.CommandsData;
 import factory.AnimalFactory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -13,7 +14,7 @@ public class Main {
         String commandInput = null;
         Scanner scanner = new Scanner(System.in);
 
-        while(true) {
+        while (true) {
             System.out.println("Введите одну из команд (add/list/exit):");
             commandInput = scanner.next().trim().toUpperCase();
             CommandsData commands;
@@ -24,7 +25,7 @@ public class Main {
                 continue;
             }
 
-            switch(commands) {
+            switch (commands) {
                 case ADD:
                     String type;
                     while (true) {
@@ -45,19 +46,34 @@ public class Main {
                     String name = scanner.next().trim();
 
 
-                    System.out.println("Введите возраст питомца");
-                    while (!scanner.hasNextInt()) {
-                        System.out.println("Вводите, пожалуйста, только числа");
-                        scanner.next();
+                    int age;
+                    while (true) {
+                        try {
+                            System.out.println("Введите возраст питомца");
+                            age = Integer.parseInt(scanner.next());
+                            if (age <= 0) {
+                                System.out.println("Возраст указан неверно. Пожалуйста, введите положительное число");
+                            } else
+                                break;
+                        } catch (NumberFormatException e) {
+                            System.out.println("Вы ввели неверное значение, пожалуйста, попробуйте еще раз");
+                        }
                     }
-                    int age = scanner.nextInt();
 
-                    System.out.println("Введите вес питомца");
-                    while (!scanner.hasNextDouble()) {
-                        System.out.println("Вводите, пожалуйста, только целое число или дробное число с разделителем запятая");
-                        scanner.next();
+                    double weight;
+                    while(true) {
+                        try {
+                            System.out.println("Введите вес питомца");
+                            weight = Double.parseDouble(scanner.next());
+                            if (weight <= 0) {
+                                System.out.println("Возраст указан неверно. Пожалуйста, введите положительное число");
+                            } else
+                                break;
+                        } catch (NumberFormatException e) {
+                            System.out.println("Вы ввели неверное значение, пожалуйста, попробуйте еще раз");
+                        }
                     }
-                    double weight = scanner.nextDouble();
+
 
                     System.out.println("Введите цвет питомца");
                     while (!scanner.hasNext("[a-zA-Z]*$")) {
@@ -66,7 +82,7 @@ public class Main {
                     }
                     String color = scanner.next().trim();
 
-                    AnimalData data=  AnimalData.valueOf(type);
+                    AnimalData data = AnimalData.valueOf(type);
                     Animal an = new AnimalFactory(name, age, weight, color).created(data);
                     animals.add(an);
                     an.Say();
